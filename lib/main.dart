@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'NewsApp',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: MyColors.myPenk,
+        primaryColor: Colors.white,
       ),
       onGenerateRoute: appRouter.generateRoute,
     );

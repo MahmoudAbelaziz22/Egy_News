@@ -26,20 +26,18 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^7.2.0
-  
   url_launcher: ^6.0.10
-
-  
+  webview_flutter: ^2.0.12
 
 dev_dependencies:
+  flutter_native_splash: ^1.2.1
   flutter_test:
     sdk: flutter
-  flutter_native_splash: ^1.2.1
-  
+
 flutter_native_splash:
   color: "#FF6C37"
   image: assets/images/splash.png
-  android: true 
+  android: true
   ios: true
   android_gravity: fill
   ios_content_mode: scaleAspectFill

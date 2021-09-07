@@ -10,8 +10,11 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   final NewsRepository newsRepository;
   ArticlesCubit(this.newsRepository) : super(ArticlesInitial());
   List<Article> articles = [];
-  Future<List<Article>> getallArticles() async {
-    newsRepository.getallArticles().then((articles) {
+  Future<List<Article>> getArticles(
+      {required String country, required String category}) async {
+    newsRepository
+        .getArticles(category: category, country: country)
+        .then((articles) {
       emit(ArticlesLoaded(articles));
       this.articles = articles;
     });

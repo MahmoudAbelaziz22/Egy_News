@@ -4,8 +4,8 @@ import 'package:news_app/business_logic/cubit/articles_cubit.dart';
 import 'package:news_app/data/models/article.dart';
 import 'package:news_app/data/repository/news_repository.dart';
 import 'package:news_app/data/web_services/news_services.dart';
-import 'package:news_app/presentstion/screens/Home_Screen.dart';
-import 'package:news_app/presentstion/screens/news_details_screen.dart';
+import 'package:news_app/presentstion/screens/home_screen/Home_Screen.dart';
+import 'package:news_app/presentstion/screens/news_details_screen/news_details_screen.dart';
 
 class AppRouter {
   late ArticlesCubit articlesCubit;

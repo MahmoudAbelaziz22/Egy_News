@@ -6,35 +6,17 @@ class NewsWebServices {
   late Dio dio;
 
   NewsWebServices() {
-    var option = BaseOptions(
-      baseUrl: baseUrl,
-      connectTimeout: 8 * 1000,
-      receiveTimeout: 5 * 1000,
-    );
-
-    dio = Dio(option);
+    dio = Dio();
   }
 
-  Future<dynamic> getAllArticles() async {
+  Future<dynamic> getArticles(
+      {required String country, required String category}) async {
     try {
-      Response response =
-          await dio.get('v2/top-headlines?country=eg&apiKey=$apiKey');
-
-      if (response.statusCode == 200) {
-        var jsonData = response.data;
-        return jsonData;
-      } else {
-        print('Error Ocurred with StatusCode= ${response.statusCode}');
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  Future<dynamic> getArticlesByCategory(String category) async {
-    try {
-      Response response = await dio
-          .get('v2/top-headlines?country=eg&category=$category&apiKey=$apiKey');
+      Response response = await dio.get(baseUrl, queryParameters: {
+        "apiKey": apiKey,
+        "country": country,
+        "category": category
+      });
 
       if (response.statusCode == 200) {
         var jsonData = response.data;
