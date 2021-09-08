@@ -6,6 +6,7 @@ import 'package:news_app/data/repository/news_repository.dart';
 import 'package:news_app/data/web_services/news_services.dart';
 import 'package:news_app/presentstion/screens/home_screen/Home_Screen.dart';
 import 'package:news_app/presentstion/screens/news_details_screen/news_details_screen.dart';
+import 'package:news_app/presentstion/screens/saved_articles_screen/saved_article_screen.dart';
 
 class AppRouter {
   late ArticlesCubit articlesCubit;
@@ -23,6 +24,12 @@ class AppRouter {
             builder: (_) => BlocProvider(
                   create: (context) => articlesCubit,
                   child: HomeScreen(),
+                ));
+      case SavedArticlesScreen.routeName:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                  create: (context) => articlesCubit,
+                  child: SavedArticlesScreen(),
                 ));
       case NewsDetailsScreen.routName:
         final article = settings.arguments as Article;

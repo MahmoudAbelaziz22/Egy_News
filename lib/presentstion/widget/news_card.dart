@@ -4,12 +4,14 @@ import 'package:news_app/constants.dart';
 class NewsCard extends StatelessWidget {
   final String imgUrl, text, date;
   final Function onPress;
+  final Function onSavedPress;
 
   const NewsCard(
       {required this.imgUrl,
       required this.text,
       required this.date,
-      required this.onPress});
+      required this.onPress,
+      required this.onSavedPress});
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +88,9 @@ class NewsCard extends StatelessWidget {
               child: IconButton(
                 iconSize: 24,
                 color: Colors.black,
-                onPressed: () {},
+                onPressed: () {
+                  onSavedPress();
+                },
                 icon: Icon(
                   Icons.bookmark_outline_outlined,
                 ),

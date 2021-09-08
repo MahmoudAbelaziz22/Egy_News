@@ -10,6 +10,7 @@ class ArticlesCubit extends Cubit<ArticlesState> {
   final NewsRepository newsRepository;
   ArticlesCubit(this.newsRepository) : super(ArticlesInitial());
   List<Article> articles = [];
+  List<dynamic> savedArticles = [];
   Future<List<Article>> getArticles(
       {required String country, required String category}) async {
     newsRepository
@@ -17,6 +18,15 @@ class ArticlesCubit extends Cubit<ArticlesState> {
         .then((articles) {
       emit(ArticlesLoaded(articles));
       this.articles = articles;
+    });
+
+    return articles;
+  }
+
+  Future<List<dynamic>> getSavedArticles() async {
+    newsRepository.getSavedArticles().then((articles) {
+      emit(SavedArticlesLoaded(articles));
+      this.savedArticles = articles;
     });
 
     return articles;

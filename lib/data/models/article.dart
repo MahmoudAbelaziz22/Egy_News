@@ -27,4 +27,16 @@ class Article {
       content: jsonData['content'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    // data['author'] = this.author;
+    data['title'] = this.title;
+    data['description'] = this.description;
+    data['url'] = this.url;
+    data['urlToImage'] = this.urlToImage;
+    data['publishedAt'] = this.publishedAt;
+    // data['content'] = this.content;
+    return data;
+  }
 }

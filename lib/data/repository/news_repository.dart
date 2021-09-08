@@ -1,10 +1,10 @@
+import 'package:news_app/data/local_database/local_db_helper.dart';
 import 'package:news_app/data/web_services/news_services.dart';
 import 'package:news_app/data/models/article.dart';
 import 'package:news_app/data/models/articels.dart';
 
 class NewsRepository {
   final NewsWebServices newsWebServices;
-
   NewsRepository(this.newsWebServices);
 
   Future<List<Article>> getArticles(
@@ -19,8 +19,17 @@ class NewsRepository {
             element.title != null &&
             element.url != null &&
             element.urlToImage != null &&
-            element.description != null)
+            element.description != null &&
+            element.publishedAt != null)
         .toList();
+    return articles;
+  }
+
+  Future<List<dynamic>> getSavedArticles() async {
+    LocalDbHelper localDbHelper = LocalDbHelper();
+    final localDatabaseData = await localDbHelper.allSavedArticles();
+    List<Article> articles =
+        localDatabaseData.map((e) => Article.fromJson(e)).toList();
     return articles;
   }
 }

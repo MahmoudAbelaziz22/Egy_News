@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:news_app/business_logic/cubit/articles_cubit.dart';
 import 'package:news_app/constants.dart';
+import 'package:news_app/presentstion/screens/saved_articles_screen/saved_article_screen.dart';
 
 class CategoryNavBar extends StatefulWidget {
   final Function scrollToTop;
@@ -21,6 +22,7 @@ class _CategoryNavBarState extends State<CategoryNavBar> {
     "science",
     "business",
     "health",
+    'saved'
   ];
   String categoryName = "general";
 
@@ -37,16 +39,19 @@ class _CategoryNavBarState extends State<CategoryNavBar> {
         itemCount: categories.length,
         itemBuilder: (BuildContext context, int index) => GestureDetector(
           onTap: () {
-            setState(() {
-              categoryName = categories[index];
-              BlocProvider.of<ArticlesCubit>(context)
-                  .getArticles(category: categoryName, country: "eg");
-              widget.scrollToTop();
-            });
+            if (categories[index] == 'saved') {
+              Navigator.pushNamed(context, SavedArticlesScreen.routeName);
+            } else {
+              setState(() {
+                categoryName = categories[index];
+                BlocProvider.of<ArticlesCubit>(context)
+                    .getArticles(category: categoryName, country: "eg");
+                widget.scrollToTop();
+              });
+            }
           },
           child: Container(
             margin: const EdgeInsets.all(6),
-            //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: categories[index] == categoryName

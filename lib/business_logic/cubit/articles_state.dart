@@ -10,3 +10,9 @@ class ArticlesLoaded extends ArticlesState {
 
   ArticlesLoaded(this.articles);
 }
+
+class SavedArticlesLoaded extends ArticlesState {
+  final List<dynamic> articles;
+
+  SavedArticlesLoaded(this.articles);
+}

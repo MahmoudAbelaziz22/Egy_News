@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:news_app/business_logic/cubit/articles_cubit.dart';
 import 'package:news_app/constants.dart';
+import 'package:news_app/data/local_database/local_db_helper.dart';
 import 'package:news_app/data/models/article.dart';
 import 'package:news_app/presentstion/screens/home_screen/components/app_bar_title.dart';
 import 'package:news_app/presentstion/screens/home_screen/components/category_nav_bar.dart';
 import 'package:news_app/presentstion/screens/home_screen/components/search_button.dart';
 import 'package:news_app/presentstion/screens/news_details_screen/news_details_screen.dart';
 
-import 'components/loading_indicator.dart';
-import 'components/news_cart.dart';
+import '../../widget/loading_indicator.dart';
+import '../../widget/news_card.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routName = '/';
@@ -26,10 +28,11 @@ class _HomeScreenState extends State<HomeScreen> {
   late ScrollController _scrollController;
   bool isSearching = false;
   bool showScrolltoTopButton = false;
-
+  late LocalDbHelper localDbHelper;
   @override
   void initState() {
     super.initState();
+    localDbHelper = LocalDbHelper();
     _scrollController = ScrollController()
       ..addListener(() {
         if (_scrollController.offset > 400) {
@@ -55,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
+
     super.dispose();
   }
 
@@ -118,6 +122,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             text: toShowArticles[index].title!,
                             imgUrl: toShowArticles[index].urlToImage!,
                             date: toShowArticles[index].publishedAt!,
+                            onSavedPress: () {
+                              try {
+                                localDbHelper
+                                    .saveArticle(toShowArticles[index]);
+                                Fluttertoast.showToast(
+                                    msg: "Article added to Saved",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.grey.shade600,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              } catch (error) {
+                                print(error);
+                              }
+                            },
                             onPress: () {
                               Navigator.pushNamed(
                                   context, NewsDetailsScreen.routName,
