@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SearchButton extends StatelessWidget {
-  bool isSearching;
+  final bool isSearching;
   final VoidCallback? onPressed;
   SearchButton({required this.isSearching, required this.onPressed});
 

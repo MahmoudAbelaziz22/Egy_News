@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app/constants.dart';
 
 class AppBarTitle extends StatelessWidget {
-  bool isSearching;
+  final bool isSearching;
   final ValueChanged<String>? onChanged;
   AppBarTitle({required this.isSearching, required this.onChanged});
 

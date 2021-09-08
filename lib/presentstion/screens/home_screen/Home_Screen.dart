@@ -4,6 +4,7 @@ import 'package:news_app/business_logic/cubit/articles_cubit.dart';
 import 'package:news_app/constants.dart';
 import 'package:news_app/data/models/article.dart';
 import 'package:news_app/presentstion/screens/home_screen/components/app_bar_title.dart';
+import 'package:news_app/presentstion/screens/home_screen/components/category_nav_bar.dart';
 import 'package:news_app/presentstion/screens/home_screen/components/search_button.dart';
 import 'package:news_app/presentstion/screens/news_details_screen/news_details_screen.dart';
 
@@ -46,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .getArticles(country: country, category: category);
   }
 
-  scrollToTop() {
+  void scrollToTop() {
     _scrollController.animateTo(0,
         duration: Duration(seconds: 1), curve: Curves.linear);
   }
@@ -75,7 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
             isSearching: isSearching,
             onChanged: (searchCharacters) {
               setState(() {
-                print(searchCharacters);
                 searchedArticles = articles!
                     .where(
                       (element) => element.title!.toLowerCase().contains(
@@ -83,7 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                     )
                     .toList();
-                print(searchedArticles.length);
               });
             }),
         actions: [
@@ -102,22 +101,33 @@ class _HomeScreenState extends State<HomeScreen> {
           if (state is ArticlesLoaded) {
             articles = (state).articles;
             var toShowArticles = isSearching ? searchedArticles : articles;
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-              child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount: toShowArticles!.length,
-                  itemBuilder: (context, index) {
-                    return NewsCard(
-                      text: toShowArticles[index].title!,
-                      imgUrl: toShowArticles[index].urlToImage!,
-                      date: toShowArticles[index].publishedAt!,
-                      onPress: () {
-                        Navigator.pushNamed(context, NewsDetailsScreen.routName,
-                            arguments: toShowArticles[index]);
-                      },
-                    );
-                  }),
+            return Column(
+              children: [
+                CategoryNavBar(
+                  scrollToTop: scrollToTop,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 12),
+                    child: ListView.builder(
+                        controller: _scrollController,
+                        itemCount: toShowArticles!.length,
+                        itemBuilder: (context, index) {
+                          return NewsCard(
+                            text: toShowArticles[index].title!,
+                            imgUrl: toShowArticles[index].urlToImage!,
+                            date: toShowArticles[index].publishedAt!,
+                            onPress: () {
+                              Navigator.pushNamed(
+                                  context, NewsDetailsScreen.routName,
+                                  arguments: toShowArticles[index]);
+                            },
+                          );
+                        }),
+                  ),
+                ),
+              ],
             );
           } else {
             return LoadingIndicator();
