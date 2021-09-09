@@ -1,4 +1,5 @@
 class Article {
+  final int? id;
   final String? author;
   final String? title;
   final String? description;
@@ -8,7 +9,8 @@ class Article {
   final String? content;
 
   Article(
-      {required this.author,
+      {required this.id,
+      required this.author,
       required this.title,
       required this.description,
       required this.url,
@@ -18,6 +20,7 @@ class Article {
 
   factory Article.fromJson(Map<String, dynamic> jsonData) {
     return Article(
+      id: jsonData['id'],
       author: jsonData['author'],
       title: jsonData['title'],
       description: jsonData['description'],

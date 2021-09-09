@@ -119,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemCount: toShowArticles!.length,
                         itemBuilder: (context, index) {
                           return NewsCard(
+                            id: 0,
                             text: toShowArticles[index].title!,
                             imgUrl: toShowArticles[index].urlToImage!,
                             date: toShowArticles[index].publishedAt!,

@@ -62,7 +62,7 @@ class _CategoryNavBarState extends State<CategoryNavBar> {
               child: Text(
                 categories[index].toUpperCase(),
                 style: TextStyle(
-                  fontSize: 13,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: categories[index] == categoryName
                       ? Colors.white
@@ -73,7 +73,7 @@ class _CategoryNavBarState extends State<CategoryNavBar> {
           ),
         ),
         staggeredTileBuilder: (int index) =>
-            StaggeredTile.count(1, categories[index].length.toDouble() / 3.5),
+            StaggeredTile.count(1, categories[index].length.toDouble() / 3.8),
         mainAxisSpacing: 1.0,
         crossAxisSpacing: 1.0,
       ),

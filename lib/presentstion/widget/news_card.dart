@@ -5,9 +5,11 @@ class NewsCard extends StatelessWidget {
   final String imgUrl, text, date;
   final Function onPress;
   final Function onSavedPress;
+  final int? id;
 
   const NewsCard(
-      {required this.imgUrl,
+      {required this.id,
+      required this.imgUrl,
       required this.text,
       required this.date,
       required this.onPress,
@@ -87,13 +89,17 @@ class NewsCard extends StatelessWidget {
               backgroundColor: Colors.white,
               child: IconButton(
                 iconSize: 24,
-                color: Colors.black,
+                color: MyColors.myGreen,
                 onPressed: () {
                   onSavedPress();
                 },
-                icon: Icon(
-                  Icons.bookmark_outline_outlined,
-                ),
+                icon: id == 0
+                    ? Icon(
+                        Icons.bookmark_outline_outlined,
+                      )
+                    : Icon(
+                        Icons.bookmark,
+                      ),
               ),
             ),
           )
