@@ -22,7 +22,6 @@ class _CategoryNavBarState extends State<CategoryNavBar> {
     "science",
     "business",
     "health",
-    'saved'
   ];
   String categoryName = "general";
 
@@ -39,16 +38,12 @@ class _CategoryNavBarState extends State<CategoryNavBar> {
         itemCount: categories.length,
         itemBuilder: (BuildContext context, int index) => GestureDetector(
           onTap: () {
-            if (categories[index] == 'saved') {
-              Navigator.pushNamed(context, SavedArticlesScreen.routeName);
-            } else {
-              setState(() {
-                categoryName = categories[index];
-                BlocProvider.of<ArticlesCubit>(context)
-                    .getArticles(category: categoryName, country: "eg");
-                widget.scrollToTop();
-              });
-            }
+            setState(() {
+              categoryName = categories[index];
+              BlocProvider.of<ArticlesCubit>(context)
+                  .getArticles(category: categoryName, country: "eg");
+              widget.scrollToTop();
+            });
           },
           child: Container(
             margin: const EdgeInsets.all(6),

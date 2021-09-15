@@ -9,7 +9,8 @@ import 'package:news_app/presentstion/screens/home_screen/components/app_bar_tit
 import 'package:news_app/presentstion/screens/home_screen/components/category_nav_bar.dart';
 import 'package:news_app/presentstion/screens/home_screen/components/search_button.dart';
 import 'package:news_app/presentstion/screens/news_details_screen/news_details_screen.dart';
-
+import 'package:news_app/presentstion/widget/custom_drawer.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../widget/loading_indicator.dart';
 import '../../widget/news_card.dart';
 
@@ -72,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Icon(Icons.arrow_upward),
             )
           : SizedBox(),
-      drawer: Drawer(),
+      drawer: CustomDrawer(),
       appBar: AppBar(
         elevation: 0.0,
         centerTitle: true,
@@ -123,6 +124,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             text: toShowArticles[index].title!,
                             imgUrl: toShowArticles[index].urlToImage!,
                             date: toShowArticles[index].publishedAt!,
+                            onSharePress: () {
+                              Share.share(toShowArticles[index].url!);
+                            },
                             onSavedPress: () {
                               try {
                                 localDbHelper

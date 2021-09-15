@@ -7,6 +7,7 @@ import 'package:news_app/presentstion/screens/home_screen/home_screen.dart';
 import 'package:news_app/presentstion/screens/news_details_screen/news_details_screen.dart';
 import 'package:news_app/presentstion/widget/loading_indicator.dart';
 import 'package:news_app/presentstion/widget/news_card.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../constants.dart';
 
@@ -65,8 +66,11 @@ class _SavedArticlesScreenState extends State<SavedArticlesScreen> {
               child: Icon(Icons.arrow_upward),
             )
           : SizedBox(),
-      drawer: Drawer(),
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pushNamed(context, HomeScreen.routName),
+        ),
         elevation: 0.0,
         centerTitle: true,
         title: Text(
@@ -75,14 +79,6 @@ class _SavedArticlesScreenState extends State<SavedArticlesScreen> {
             color: MyColors.myGreen,
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, HomeScreen.routName);
-            },
-            icon: Icon(Icons.home),
-          )
-        ],
       ),
       body: BlocBuilder<ArticlesCubit, ArticlesState>(
         builder: (context, state) {
@@ -100,6 +96,9 @@ class _SavedArticlesScreenState extends State<SavedArticlesScreen> {
                       text: articles[index].title!,
                       imgUrl: articles[index].urlToImage!,
                       date: articles[index].publishedAt!,
+                      onSharePress: () {
+                        Share.share(articles[index].url!);
+                      },
                       onSavedPress: () {
                         setState(() {
                           localDbHelper.delete(articles[index].id);
