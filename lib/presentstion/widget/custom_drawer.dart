@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/constants.dart';
+import '../../constants.dart';
 
-import 'package:news_app/data/models/tile.dart';
-import 'package:news_app/presentstion/screens/saved_articles_screen/saved_article_screen.dart';
-import 'package:news_app/presentstion/screens/select_country_screen/select_country_screen.dart';
-import 'package:news_app/presentstion/widget/custom_tile.dart';
+import '../../data/models/tile.dart';
+import '../screens/saved_articles_screen/saved_article_screen.dart';
+import '../screens/select_country_screen/select_country_screen.dart';
+import 'custom_tile.dart';
 
 class CustomDrawer extends StatefulWidget {
   CustomDrawer({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   List<Tile> tiles = [
     Tile(title: "Bookmark", icon: Icons.bookmark_add),
-    Tile(title: "Settings", icon: Icons.settings),
+    Tile(title: "Select Country", icon: Icons.flag),
   ];
 
   String selectedTitle = "";

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:news_app/data/models/country.dart';
-import 'package:news_app/presentstion/screens/home_screen/Home_Screen.dart';
+
+import '../../../data/models/country.dart';
+import '../home_screen/Home_Screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constants.dart';

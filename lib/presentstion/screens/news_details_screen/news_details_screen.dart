@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/constants.dart';
-import 'package:news_app/data/models/article.dart';
-import 'package:news_app/presentstion/widget/loading_indicator.dart';
+import '../../../constants.dart';
+import '../../../data/models/article.dart';
+import '../../widget/loading_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:news_app/business_logic/cubit/articles_cubit.dart';
-import 'package:news_app/constants.dart';
-import 'package:news_app/data/local_database/local_db_helper.dart';
-import 'package:news_app/data/models/article.dart';
-import 'package:news_app/presentstion/screens/home_screen/components/app_bar_title.dart';
-import 'package:news_app/presentstion/screens/home_screen/components/category_nav_bar.dart';
-import 'package:news_app/presentstion/screens/home_screen/components/search_button.dart';
-import 'package:news_app/presentstion/screens/news_details_screen/news_details_screen.dart';
-import 'package:news_app/presentstion/screens/select_country_screen/select_country_screen.dart';
-import 'package:news_app/presentstion/widget/custom_drawer.dart';
+import '../../../business_logic/cubit/articles_cubit.dart';
+import '../../../constants.dart';
+import '../../../data/local_database/local_db_helper.dart';
+import '../../../data/models/article.dart';
+import 'components/app_bar_title.dart';
+import 'components/category_nav_bar.dart';
+import 'components/search_button.dart';
+import '../news_details_screen/news_details_screen.dart';
+import '../select_country_screen/select_country_screen.dart';
+import '../../widget/custom_drawer.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../widget/loading_indicator.dart';
@@ -82,6 +82,40 @@ class _HomeScreenState extends State<HomeScreen> {
         duration: Duration(seconds: 1), curve: Curves.linear);
   }
 
+  _search(String searchCharacters) {
+    setState(() {
+      searchedArticles = articles!
+          .where(
+            (element) => element.title!.toLowerCase().contains(
+                  searchCharacters.toLowerCase(),
+                ),
+          )
+          .toList();
+    });
+  }
+
+  _buildAppBar() {
+    return AppBar(
+      elevation: 0.0,
+      centerTitle: true,
+      title: AppBarTitle(
+          isSearching: isSearching,
+          onChanged: (searchCharacters) {
+            _search(searchCharacters);
+          }),
+      actions: [
+        SearchButton(
+          isSearching: isSearching,
+          onPressed: () {
+            setState(() {
+              isSearching = !isSearching;
+            });
+          },
+        ),
+      ],
+    );
+  }
+
   // random reorder of articles if you call refresh indicator
   Future<Null> articlesShuffle() async {
     await Future.delayed(Duration(milliseconds: 500));
@@ -108,33 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           : SizedBox(),
       drawer: CustomDrawer(),
-      appBar: AppBar(
-        elevation: 0.0,
-        centerTitle: true,
-        title: AppBarTitle(
-            isSearching: isSearching,
-            onChanged: (searchCharacters) {
-              setState(() {
-                searchedArticles = articles!
-                    .where(
-                      (element) => element.title!.toLowerCase().contains(
-                            searchCharacters.toLowerCase(),
-                          ),
-                    )
-                    .toList();
-              });
-            }),
-        actions: [
-          SearchButton(
-            isSearching: isSearching,
-            onPressed: () {
-              setState(() {
-                isSearching = !isSearching;
-              });
-            },
-          ),
-        ],
-      ),
+      appBar: _buildAppBar(),
       body: BlocBuilder<ArticlesCubit, ArticlesState>(
         builder: (context, state) {
           if (state is ArticlesLoaded) {

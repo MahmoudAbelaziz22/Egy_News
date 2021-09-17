@@ -1,6 +1,6 @@
 import 'package:flag/flag_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/data/models/country.dart';
+import '../../../../data/models/country.dart';
 
 class CountryCard extends StatelessWidget {
   const CountryCard(

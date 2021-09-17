@@ -1,4 +1,4 @@
-import 'package:news_app/data/models/article.dart';
+import '../models/article.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 

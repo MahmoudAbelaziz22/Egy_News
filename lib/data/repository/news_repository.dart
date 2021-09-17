@@ -1,7 +1,7 @@
-import 'package:news_app/data/local_database/local_db_helper.dart';
-import 'package:news_app/data/web_services/news_services.dart';
-import 'package:news_app/data/models/article.dart';
-import 'package:news_app/data/models/articels.dart';
+import '../local_database/local_db_helper.dart';
+import '../web_services/news_services.dart';
+import '../models/article.dart';
+import '../models/articels.dart';
 
 class NewsRepository {
   final NewsWebServices newsWebServices;

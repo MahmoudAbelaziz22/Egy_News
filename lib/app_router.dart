@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_app/business_logic/cubit/articles_cubit.dart';
-import 'package:news_app/data/models/article.dart';
-import 'package:news_app/data/repository/news_repository.dart';
-import 'package:news_app/data/web_services/news_services.dart';
-import 'package:news_app/presentstion/screens/home_screen/home_screen.dart';
-import 'package:news_app/presentstion/screens/news_details_screen/news_details_screen.dart';
-import 'package:news_app/presentstion/screens/saved_articles_screen/saved_article_screen.dart';
-import 'package:news_app/presentstion/screens/select_country_screen/select_country_screen.dart';
+
+import 'business_logic/cubit/articles_cubit.dart';
+import 'data/models/article.dart';
+import 'data/repository/news_repository.dart';
+import 'data/web_services/news_services.dart';
+import 'presentstion/screens/home_screen/home_screen.dart';
+import 'presentstion/screens/news_details_screen/news_details_screen.dart';
+import 'presentstion/screens/saved_articles_screen/saved_article_screen.dart';
+import 'presentstion/screens/select_country_screen/select_country_screen.dart';
 
 class AppRouter {
   late ArticlesCubit articlesCubit;

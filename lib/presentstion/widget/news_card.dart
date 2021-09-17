@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/constants.dart';
+import '../../constants.dart';
 
 class NewsCard extends StatelessWidget {
   final String imgUrl, text, date;

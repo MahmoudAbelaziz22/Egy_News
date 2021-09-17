@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:news_app/business_logic/cubit/articles_cubit.dart';
-import 'package:news_app/data/local_database/local_db_helper.dart';
-import 'package:news_app/presentstion/screens/home_screen/home_screen.dart';
-import 'package:news_app/presentstion/screens/news_details_screen/news_details_screen.dart';
-import 'package:news_app/presentstion/widget/loading_indicator.dart';
-import 'package:news_app/presentstion/widget/news_card.dart';
+import '../../../business_logic/cubit/articles_cubit.dart';
+import '../../../data/local_database/local_db_helper.dart';
+import '../home_screen/home_screen.dart';
+import '../news_details_screen/news_details_screen.dart';
+import '../../widget/loading_indicator.dart';
+import '../../widget/news_card.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../constants.dart';

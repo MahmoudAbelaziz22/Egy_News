@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import 'package:news_app/data/models/article.dart';
-import 'package:news_app/data/repository/news_repository.dart';
+import '../../data/models/article.dart';
+import '../../data/repository/news_repository.dart';
 
 part 'articles_state.dart';
 

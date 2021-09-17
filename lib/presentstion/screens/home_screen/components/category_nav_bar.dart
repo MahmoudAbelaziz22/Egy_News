@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:news_app/business_logic/cubit/articles_cubit.dart';
-import 'package:news_app/constants.dart';
-import 'package:news_app/presentstion/screens/saved_articles_screen/saved_article_screen.dart';
+import '../../../../business_logic/cubit/articles_cubit.dart';
+import '../../../../constants.dart';
+import '../../saved_articles_screen/saved_article_screen.dart';
 
 class CategoryNavBar extends StatefulWidget {
   final Function scrollToTop;
