@@ -7,6 +7,7 @@ import 'package:news_app/data/web_services/news_services.dart';
 import 'package:news_app/presentstion/screens/home_screen/home_screen.dart';
 import 'package:news_app/presentstion/screens/news_details_screen/news_details_screen.dart';
 import 'package:news_app/presentstion/screens/saved_articles_screen/saved_article_screen.dart';
+import 'package:news_app/presentstion/screens/select_country_screen/select_country_screen.dart';
 
 class AppRouter {
   late ArticlesCubit articlesCubit;
@@ -35,6 +36,8 @@ class AppRouter {
         final article = settings.arguments as Article;
         return MaterialPageRoute(
             builder: (_) => NewsDetailsScreen(article: article));
+      case SelectCountryScreen.routeName:
+        return MaterialPageRoute(builder: (_) => SelectCountryScreen());
     }
   }
 }

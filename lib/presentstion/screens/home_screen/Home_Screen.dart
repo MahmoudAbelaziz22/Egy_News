@@ -9,8 +9,10 @@ import 'package:news_app/presentstion/screens/home_screen/components/app_bar_tit
 import 'package:news_app/presentstion/screens/home_screen/components/category_nav_bar.dart';
 import 'package:news_app/presentstion/screens/home_screen/components/search_button.dart';
 import 'package:news_app/presentstion/screens/news_details_screen/news_details_screen.dart';
+import 'package:news_app/presentstion/screens/select_country_screen/select_country_screen.dart';
 import 'package:news_app/presentstion/widget/custom_drawer.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../widget/loading_indicator.dart';
 import '../../widget/news_card.dart';
 
@@ -22,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String country = 'eg';
+  String? country;
   String category = 'general';
   List<Article>? articles;
   List<Article> searchedArticles = [];
@@ -30,10 +32,25 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isSearching = false;
   bool showScrolltoTopButton = false;
   late LocalDbHelper localDbHelper;
+
+  Future<SharedPreferences> sharedPreference = SharedPreferences.getInstance();
   @override
   void initState() {
     super.initState();
     localDbHelper = LocalDbHelper();
+    sharedPreference.then((SharedPreferences prefs) {
+      country = prefs.getString('countryCode');
+      // print(prefs.getString('countryCode')!);
+      if (country == null) {
+        Navigator.pushNamed(context, SelectCountryScreen.routeName);
+      }
+      //  print(country);
+      else {
+        BlocProvider.of<ArticlesCubit>(context)
+            .getArticles(country: country!, category: category);
+      }
+    });
+
     _scrollController = ScrollController()
       ..addListener(() {
         if (_scrollController.offset > 400) {
@@ -46,9 +63,6 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         }
       });
-
-    BlocProvider.of<ArticlesCubit>(context)
-        .getArticles(country: country, category: category);
   }
 
   void scrollToTop() {
@@ -136,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.BOTTOM,
                                     timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.grey.shade600,
+                                    backgroundColor: MyColors.myGreen,
                                     textColor: Colors.white,
                                     fontSize: 16.0);
                               } catch (error) {

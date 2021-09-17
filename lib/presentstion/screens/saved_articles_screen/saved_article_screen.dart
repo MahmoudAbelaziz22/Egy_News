@@ -67,10 +67,10 @@ class _SavedArticlesScreenState extends State<SavedArticlesScreen> {
             )
           : SizedBox(),
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pushNamed(context, HomeScreen.routName),
-        ),
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back, color: Colors.black),
+        //   onPressed: () => Navigator.pushNamed(context, HomeScreen.routName),
+        // ),
         elevation: 0.0,
         centerTitle: true,
         title: Text(

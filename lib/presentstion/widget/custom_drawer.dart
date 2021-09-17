@@ -3,6 +3,7 @@ import 'package:news_app/constants.dart';
 
 import 'package:news_app/data/models/tile.dart';
 import 'package:news_app/presentstion/screens/saved_articles_screen/saved_article_screen.dart';
+import 'package:news_app/presentstion/screens/select_country_screen/select_country_screen.dart';
 import 'package:news_app/presentstion/widget/custom_tile.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -72,6 +73,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       if (index == 0) {
                         Navigator.pushNamed(
                             context, SavedArticlesScreen.routeName);
+                      }
+                      if (index == 1) {
+                        Navigator.pushNamed(
+                            context, SelectCountryScreen.routeName);
                       }
                     });
                   },
