@@ -28,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String category = 'general';
   List<Article>? articles;
   List<Article> searchedArticles = [];
+  var toShowArticles;
   late ScrollController _scrollController;
   bool isSearching = false;
   bool showScrolltoTopButton = false;
@@ -65,9 +66,28 @@ class _HomeScreenState extends State<HomeScreen> {
       });
   }
 
+  _buildToastMessage(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: MyColors.myGreen,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
+
   void scrollToTop() {
     _scrollController.animateTo(0,
         duration: Duration(seconds: 1), curve: Curves.linear);
+  }
+
+  // random reorder of articles if you call refresh indicator
+  Future<Null> articlesShuffle() async {
+    await Future.delayed(Duration(milliseconds: 500));
+    toShowArticles.shuffle();
+    setState(() {});
+    return null;
   }
 
   @override
@@ -119,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, state) {
           if (state is ArticlesLoaded) {
             articles = (state).articles;
-            var toShowArticles = isSearching ? searchedArticles : articles;
+            toShowArticles = isSearching ? searchedArticles : articles;
             return Column(
               children: [
                 CategoryNavBar(
@@ -129,41 +149,61 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 12),
-                    child: ListView.builder(
-                        controller: _scrollController,
-                        itemCount: toShowArticles!.length,
-                        itemBuilder: (context, index) {
-                          return NewsCard(
-                            id: 0,
-                            text: toShowArticles[index].title!,
-                            imgUrl: toShowArticles[index].urlToImage!,
-                            date: toShowArticles[index].publishedAt!,
-                            onSharePress: () {
-                              Share.share(toShowArticles[index].url!);
-                            },
-                            onSavedPress: () {
-                              try {
-                                localDbHelper
-                                    .saveArticle(toShowArticles[index]);
-                                Fluttertoast.showToast(
-                                    msg: "Article added to Saved",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: MyColors.myGreen,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
-                              } catch (error) {
-                                print(error);
-                              }
-                            },
-                            onPress: () {
-                              Navigator.pushNamed(
-                                  context, NewsDetailsScreen.routName,
-                                  arguments: toShowArticles[index]);
-                            },
-                          );
-                        }),
+                    child: RefreshIndicator(
+                      onRefresh: articlesShuffle,
+                      child: ListView.builder(
+                          controller: _scrollController,
+                          itemCount: toShowArticles!.length,
+                          itemBuilder: (context, index) {
+                            return NewsCard(
+                              id: 0,
+                              text: toShowArticles[index].title!,
+                              imgUrl: toShowArticles[index].urlToImage!,
+                              date: toShowArticles[index].publishedAt!,
+                              onSharePress: () {
+                                Share.share(toShowArticles[index].url!);
+                              },
+                              onSavedPress: () async {
+                                try {
+                                  var allSavedArticlesData =
+                                      await localDbHelper.allSavedArticles();
+
+                                  List<Article> allSavedArticles =
+                                      allSavedArticlesData
+                                          .map((e) => Article.fromJson(e))
+                                          .toList();
+                                  var isExist = false;
+                                  for (var i = 0;
+                                      i < allSavedArticles.length;
+                                      i++) {
+                                    // you may have to check the equality operator
+                                    //  print(allSavedArticles[i].title);
+                                    if (toShowArticles[index].title! ==
+                                        allSavedArticles[i].title) {
+                                      isExist = true;
+                                      break;
+                                    }
+                                  }
+                                  if (isExist) {
+                                    _buildToastMessage("Article is Exist");
+                                  } else {
+                                    localDbHelper
+                                        .saveArticle(toShowArticles[index]);
+                                    _buildToastMessage(
+                                        "Article added to Saved");
+                                  }
+                                } catch (error) {
+                                  print(error);
+                                }
+                              },
+                              onPress: () {
+                                Navigator.pushNamed(
+                                    context, NewsDetailsScreen.routName,
+                                    arguments: toShowArticles[index]);
+                              },
+                            );
+                          }),
+                    ),
                   ),
                 ),
               ],
