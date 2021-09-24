@@ -43,10 +43,26 @@ class _CustomDrawerState extends State<CustomDrawer> {
           color: Color(0xFFFFFFFF),
           child: Column(
             children: [
-              CustomTile(
-                leadingIcon: Icons.account_box_rounded,
-                onTap: () {},
-                title: "Oday",
+              Container(
+                width: double.infinity,
+                child: Center(
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: AssetImage('assets/images/oday.jpg'),
+                        radius: 35,
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Text(
+                        'Oday Abdo',
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               SizedBox(
                 height: 10,
@@ -59,10 +75,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 (index) => CustomTile(
                   leadingIconColor: selectedTitle == tiles[index].title
                       ? Colors.white
-                      : Colors.black,
+                      : MyColors.myGreen,
                   titleColor: selectedTitle == tiles[index].title
                       ? Colors.white
-                      : Colors.black,
+                      : MyColors.myGreen,
                   tileColor: selectedTitle == tiles[index].title
                       ? MyColors.myGreen
                       : Colors.transparent,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../business_logic/cubit/articles_cubit.dart';
 import '../../../../constants.dart';
-import '../../saved_articles_screen/saved_article_screen.dart';
 
 class CategoryNavBar extends StatefulWidget {
   final Function scrollToTop;
@@ -24,6 +24,16 @@ class _CategoryNavBarState extends State<CategoryNavBar> {
     "health",
   ];
   String categoryName = "general";
+  String? country = 'eg';
+  Future<SharedPreferences> sharedPreference = SharedPreferences.getInstance();
+
+  @override
+  void initState() {
+    super.initState();
+    sharedPreference.then((SharedPreferences prefs) {
+      country = prefs.getString('countryCode');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +51,7 @@ class _CategoryNavBarState extends State<CategoryNavBar> {
             setState(() {
               categoryName = categories[index];
               BlocProvider.of<ArticlesCubit>(context)
-                  .getArticles(category: categoryName, country: "eg");
+                  .getArticles(category: categoryName, country: country!);
               widget.scrollToTop();
             });
           },

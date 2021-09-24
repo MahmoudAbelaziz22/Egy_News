@@ -32,10 +32,11 @@ class NewsCard extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(12),
                     topRight: Radius.circular(12)),
-                child: Image(
+                child: FadeInImage.assetNetwork(
                   width: double.infinity,
-                  image: NetworkImage(imgUrl),
                   fit: BoxFit.cover,
+                  placeholder: 'assets/images/placeholder.gif',
+                  image: imgUrl,
                 ),
               ),
               Padding(
