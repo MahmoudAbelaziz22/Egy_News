@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
       country = prefs.getString('countryCode');
       // print(prefs.getString('countryCode')!);
       if (country == null) {
-        Navigator.pushNamed(context, SelectCountryScreen.routeName);
+        Navigator.pushReplacementNamed(context, SelectCountryScreen.routeName);
       }
       //  print(country);
       else {
@@ -224,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
                             },
                             onPress: () {
-                              Navigator.pushNamed(
+                              Navigator.pushReplacementNamed(
                                   context, NewsDetailsScreen.routName,
                                   arguments: toShowArticles[index]);
                             },

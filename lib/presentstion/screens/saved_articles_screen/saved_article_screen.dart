@@ -70,7 +70,8 @@ class _SavedArticlesScreenState extends State<SavedArticlesScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pushNamed(context, HomeScreen.routName),
+          onPressed: () =>
+              Navigator.pushReplacementNamed(context, HomeScreen.routName),
         ),
         elevation: 0.0,
         centerTitle: true,
@@ -116,7 +117,8 @@ class _SavedArticlesScreenState extends State<SavedArticlesScreen> {
                         });
                       },
                       onPress: () {
-                        Navigator.pushNamed(context, NewsDetailsScreen.routName,
+                        Navigator.pushReplacementNamed(
+                            context, NewsDetailsScreen.routName,
                             arguments: articles[index]);
                       },
                     );

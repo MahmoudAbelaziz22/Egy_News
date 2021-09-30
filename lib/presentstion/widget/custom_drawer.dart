@@ -87,11 +87,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     setState(() {
                       selectedTitle = tiles[index].title;
                       if (index == 0) {
-                        Navigator.pushNamed(
+                        Navigator.pushReplacementNamed(
                             context, SavedArticlesScreen.routeName);
                       }
                       if (index == 1) {
-                        Navigator.pushNamed(
+                        Navigator.pushReplacementNamed(
                             context, SelectCountryScreen.routeName);
                       }
                     });
