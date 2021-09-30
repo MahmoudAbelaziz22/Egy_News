@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String category = 'general';
   List<Article>? articles;
   List<Article> searchedArticles = [];
-  var toShowArticles;
+  List<Article> toShowArticles = [];
   late ScrollController _scrollController;
   bool isSearching = false;
   bool showScrolltoTopButton = false;
@@ -54,6 +54,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
     _scrollController = ScrollController()
       ..addListener(() {
+        if (_scrollController.position.atEdge) {
+          if (_scrollController.position.pixels != 0) {
+            BlocProvider.of<ArticlesCubit>(context)
+                .getArticles(country: country!, category: category);
+          }
+        }
         if (_scrollController.offset > 400) {
           setState(() {
             showScrolltoTopButton = true;
@@ -145,80 +151,91 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: _buildAppBar(),
       body: BlocBuilder<ArticlesCubit, ArticlesState>(
         builder: (context, state) {
+          bool isLoading = false;
+          if (state is ArticlesLoading && state.isFirstFetch) {
+            return LoadingIndicator();
+          }
+          if (state is ArticlesLoading) {
+            articles = (state).oldArticles;
+            toShowArticles = isSearching ? searchedArticles : articles!;
+            isLoading = true;
+          }
           if (state is ArticlesLoaded) {
             articles = (state).articles;
-            toShowArticles = isSearching ? searchedArticles : articles;
-            return Column(
-              children: [
-                CategoryNavBar(
-                  scrollToTop: scrollToTop,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 12),
-                    child: RefreshIndicator(
-                      onRefresh: articlesShuffle,
-                      child: ListView.builder(
-                          controller: _scrollController,
-                          itemCount: toShowArticles!.length,
-                          itemBuilder: (context, index) {
-                            return NewsCard(
-                              id: 0,
-                              text: toShowArticles[index].title!,
-                              imgUrl: toShowArticles[index].urlToImage!,
-                              date: toShowArticles[index].publishedAt!,
-                              onSharePress: () {
-                                Share.share(toShowArticles[index].url!);
-                              },
-                              onSavedPress: () async {
-                                try {
-                                  var allSavedArticlesData =
-                                      await localDbHelper.allSavedArticles();
+            toShowArticles = isSearching ? searchedArticles : articles!;
+          }
+          return Column(
+            children: [
+              CategoryNavBar(
+                scrollToTop: scrollToTop,
+              ),
+              Expanded(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                  child: RefreshIndicator(
+                    onRefresh: articlesShuffle,
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: toShowArticles.length + (isLoading ? 1 : 0),
+                      itemBuilder: (context, index) {
+                        if (index < toShowArticles.length) {
+                          return NewsCard(
+                            id: 0,
+                            text: toShowArticles[index].title!,
+                            imgUrl: toShowArticles[index].urlToImage!,
+                            date: toShowArticles[index].publishedAt!,
+                            onSharePress: () {
+                              Share.share(toShowArticles[index].url!);
+                            },
+                            onSavedPress: () async {
+                              try {
+                                var allSavedArticlesData =
+                                    await localDbHelper.allSavedArticles();
 
-                                  List<Article> allSavedArticles =
-                                      allSavedArticlesData
-                                          .map((e) => Article.fromJson(e))
-                                          .toList();
-                                  var isExist = false;
-                                  for (var i = 0;
-                                      i < allSavedArticles.length;
-                                      i++) {
-                                    // you may have to check the equality operator
-                                    //  print(allSavedArticles[i].title);
-                                    if (toShowArticles[index].title! ==
-                                        allSavedArticles[i].title) {
-                                      isExist = true;
-                                      break;
-                                    }
+                                List<Article> allSavedArticles =
+                                    allSavedArticlesData
+                                        .map((e) => Article.fromJson(e))
+                                        .toList();
+                                var isExist = false;
+                                for (var i = 0;
+                                    i < allSavedArticles.length;
+                                    i++) {
+                                  // you may have to check the equality operator
+                                  //  print(allSavedArticles[i].title);
+                                  if (toShowArticles[index].title! ==
+                                      allSavedArticles[i].title) {
+                                    isExist = true;
+                                    break;
                                   }
-                                  if (isExist) {
-                                    _buildToastMessage("Article is Exist");
-                                  } else {
-                                    localDbHelper
-                                        .saveArticle(toShowArticles[index]);
-                                    _buildToastMessage(
-                                        "Article added to Saved");
-                                  }
-                                } catch (error) {
-                                  print(error);
                                 }
-                              },
-                              onPress: () {
-                                Navigator.pushNamed(
-                                    context, NewsDetailsScreen.routName,
-                                    arguments: toShowArticles[index]);
-                              },
-                            );
-                          }),
+                                if (isExist) {
+                                  _buildToastMessage("Article is Exist");
+                                } else {
+                                  localDbHelper
+                                      .saveArticle(toShowArticles[index]);
+                                  _buildToastMessage("Article added to Saved");
+                                }
+                              } catch (error) {
+                                print(error);
+                              }
+                            },
+                            onPress: () {
+                              Navigator.pushNamed(
+                                  context, NewsDetailsScreen.routName,
+                                  arguments: toShowArticles[index]);
+                            },
+                          );
+                        } else {
+                          return LoadingIndicator();
+                        }
+                      },
                     ),
                   ),
                 ),
-              ],
-            );
-          } else {
-            return LoadingIndicator();
-          }
+              ),
+            ],
+          );
         },
       ),
     );

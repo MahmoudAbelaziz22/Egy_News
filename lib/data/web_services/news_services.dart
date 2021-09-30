@@ -10,12 +10,16 @@ class NewsWebServices {
   }
 
   Future<dynamic> getArticles(
-      {required String country, required String category}) async {
+      {required String country,
+      required String category,
+      required int page}) async {
     try {
       Response response = await dio.get(baseUrl, queryParameters: {
         "apiKey": apiKey,
         "country": country,
-        "category": category
+        "category": category,
+        "pageSize": PAGE_SIZE,
+        "page": page
       });
 
       if (response.statusCode == 200) {

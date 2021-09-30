@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'app_router.dart';
-import 'constants.dart';
-import 'presentstion/screens/select_country_screen/select_country_screen.dart';
 
 void main() {
   runApp(

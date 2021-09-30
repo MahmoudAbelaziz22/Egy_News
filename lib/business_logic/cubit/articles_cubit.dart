@@ -7,15 +7,34 @@ import '../../data/repository/news_repository.dart';
 part 'articles_state.dart';
 
 class ArticlesCubit extends Cubit<ArticlesState> {
+  int page = 1;
   final NewsRepository newsRepository;
   ArticlesCubit(this.newsRepository) : super(ArticlesInitial());
+
   List<Article> articles = [];
   List<dynamic> savedArticles = [];
-  Future<List<Article>> getArticles(
-      {required String country, required String category}) async {
+
+  Future<List<Article>> getArticles({
+    required String country,
+    required String category,
+  }) async {
+    if (state is ArticlesLoading) return [];
+    final currentState = state;
+    var oldPosts = <Article>[];
+    if (currentState is ArticlesLoaded) {
+      oldPosts = currentState.articles;
+    }
+
+    emit(ArticlesLoading(oldPosts, isFirstFetch: page == 1));
+
     newsRepository
-        .getArticles(category: category, country: country)
-        .then((articles) {
+        .getArticles(country: country, category: category, page: page)
+        .then((newArticles) {
+      page++;
+
+      articles = (state as ArticlesLoading).oldArticles;
+      articles.addAll(newArticles);
+
       emit(ArticlesLoaded(articles));
       this.articles = articles;
     });

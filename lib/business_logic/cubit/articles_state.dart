@@ -11,6 +11,13 @@ class ArticlesLoaded extends ArticlesState {
   ArticlesLoaded(this.articles);
 }
 
+class ArticlesLoading extends ArticlesState {
+  final List<Article> oldArticles;
+  final bool isFirstFetch;
+
+  ArticlesLoading(this.oldArticles, {this.isFirstFetch = false});
+}
+
 class SavedArticlesLoaded extends ArticlesState {
   final List<dynamic> articles;
 

@@ -7,10 +7,13 @@ class NewsRepository {
   final NewsWebServices newsWebServices;
   NewsRepository(this.newsWebServices);
 
-  Future<List<Article>> getArticles(
-      {required String country, required String category}) async {
-    final webServicesData =
-        await newsWebServices.getArticles(country: country, category: category);
+  Future<List<Article>> getArticles({
+    required String country,
+    required String category,
+    required int page,
+  }) async {
+    final webServicesData = await newsWebServices.getArticles(
+        country: country, category: category, page: page);
     Articles articlesData = Articles.fromJson(webServicesData);
     List<Article> articlesWithNull =
         articlesData.articles.map((e) => Article.fromJson(e)).toList();
