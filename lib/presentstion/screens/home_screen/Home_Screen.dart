@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../../../size_cofig.dart';
 import '../../../business_logic/cubit/articles_cubit.dart';
 import '../../../constants.dart';
 import '../../../data/local_database/local_db_helper.dart';
@@ -38,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
     localDbHelper = LocalDbHelper();
     sharedPreference.then((SharedPreferences prefs) {
       country = prefs.getString('countryCode');
@@ -80,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
         timeInSecForIosWeb: 1,
         backgroundColor: MyColors.myGreen,
         textColor: Colors.white,
-        fontSize: 16.0);
+        fontSize: getProportionateScreenWidth(14));
   }
 
   void scrollToTop() {
@@ -139,6 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       floatingActionButton: showScrolltoTopButton == true
           ? FloatingActionButton(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../size_cofig.dart';
 import '../../constants.dart';
 
 import '../../data/models/tile.dart';
@@ -29,8 +30,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    deviceWidth = MediaQuery.of(context).size.width;
-    deviceHeigth = MediaQuery.of(context).size.height;
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
@@ -39,7 +38,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             vertical: 50,
             horizontal: 12,
           ),
-          width: deviceWidth - 150,
+          width: getProportionateScreenWidth(270),
           color: Color(0xFFFFFFFF),
           child: Column(
             children: [
@@ -58,7 +57,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       Text(
                         'Oday Abdo',
                         style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
+                            fontSize: getProportionateScreenWidth(25),
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -110,7 +110,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
             icon: Icon(
               Icons.close,
-              size: 40,
+              size: getProportionateScreenWidth(40),
             ),
             color: Colors.black,
           ),

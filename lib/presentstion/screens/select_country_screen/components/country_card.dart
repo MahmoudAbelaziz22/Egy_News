@@ -1,5 +1,6 @@
 import 'package:flag/flag_widget.dart';
 import 'package:flutter/material.dart';
+import '../../../../size_cofig.dart';
 import '../../../../data/models/country.dart';
 
 class CountryCard extends StatelessWidget {
@@ -21,15 +22,17 @@ class CountryCard extends StatelessWidget {
           children: [
             Flag.fromString(
               country.countryCode,
-              height: 40,
-              width: 50,
+              height: getProportionateScreenHeight(35),
+              width: getProportionateScreenWidth(40),
             ),
             SizedBox(
               width: 20,
             ),
             Text(
               country.countryName,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: getProportionateScreenWidth(18),
+                  fontWeight: FontWeight.bold),
             )
           ],
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'size_cofig.dart';
 import 'app_router.dart';
 
 void main() {

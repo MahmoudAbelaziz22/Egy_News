@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../business_logic/cubit/articles_cubit.dart';
 import '../../../data/local_database/local_db_helper.dart';
+import '../../../size_cofig.dart';
 import '../home_screen/home_screen.dart';
 import '../news_details_screen/news_details_screen.dart';
 import '../../widget/loading_indicator.dart';
@@ -107,9 +108,9 @@ class _SavedArticlesScreenState extends State<SavedArticlesScreen> {
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM,
                               timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.grey.shade600,
+                              backgroundColor: MyColors.myGreen,
                               textColor: Colors.white,
-                              fontSize: 16.0);
+                              fontSize: getProportionateScreenWidth(14));
                           BlocProvider.of<ArticlesCubit>(context)
                               .getSavedArticles();
                         });

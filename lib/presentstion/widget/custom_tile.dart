@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../size_cofig.dart';
 import '../../constants.dart';
 
 class CustomTile extends StatelessWidget {
@@ -35,7 +36,7 @@ class CustomTile extends StatelessWidget {
           children: [
             Icon(
               leadingIcon,
-              size: 30,
+              size: getProportionateScreenWidth(30),
               color: leadingIconColor,
             ),
             SizedBox(
@@ -45,7 +46,7 @@ class CustomTile extends StatelessWidget {
               title,
               style: TextStyle(
                 color: titleColor,
-                fontSize: 18,
+                fontSize: getProportionateScreenWidth(18),
               ),
             ),
           ],

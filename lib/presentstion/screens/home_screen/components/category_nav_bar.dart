@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import '../../../../size_cofig.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../business_logic/cubit/articles_cubit.dart';
 import '../../../../constants.dart';
@@ -38,7 +39,7 @@ class _CategoryNavBarState extends State<CategoryNavBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
+      height: getProportionateScreenHeight(120),
       width: double.infinity,
       child: StaggeredGridView.countBuilder(
         physics: NeverScrollableScrollPhysics(),
@@ -67,7 +68,7 @@ class _CategoryNavBarState extends State<CategoryNavBar> {
               child: Text(
                 categories[index].toUpperCase(),
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: getProportionateScreenWidth(12),
                   fontWeight: FontWeight.bold,
                   color: categories[index] == categoryName
                       ? Colors.white
@@ -77,8 +78,10 @@ class _CategoryNavBarState extends State<CategoryNavBar> {
             ),
           ),
         ),
-        staggeredTileBuilder: (int index) =>
-            StaggeredTile.count(1, categories[index].length.toDouble() / 3.8),
+        staggeredTileBuilder: (int index) => StaggeredTile.count(
+            1,
+            categories[index].length.toDouble() /
+                getProportionateScreenWidth(4.2)),
         mainAxisSpacing: 1.0,
         crossAxisSpacing: 1.0,
       ),

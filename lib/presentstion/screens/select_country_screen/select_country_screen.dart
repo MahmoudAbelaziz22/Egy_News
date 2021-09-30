@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import '../../../size_cofig.dart';
 
 import '../../../data/models/country.dart';
 import '../home_screen/Home_Screen.dart';
@@ -39,7 +40,7 @@ class _SelectCountryScreenState extends State<SelectCountryScreen> {
         timeInSecForIosWeb: 1,
         backgroundColor: MyColors.myGreen,
         textColor: Colors.white,
-        fontSize: 16.0);
+        fontSize: getProportionateScreenWidth(14));
   }
 
   @override

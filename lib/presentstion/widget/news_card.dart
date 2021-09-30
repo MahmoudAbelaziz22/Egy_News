@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
+import '../../size_cofig.dart';
 
 class NewsCard extends StatelessWidget {
   final String imgUrl, text, date;
@@ -44,7 +45,7 @@ class NewsCard extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                 child: Text(
                   text,
-                  style: Theme.of(context).textTheme.headline5,
+                  style: Theme.of(context).textTheme.headline6,
                   maxLines: 3,
                   textDirection: TextDirection.ltr,
                   textAlign: TextAlign.center,
@@ -73,7 +74,9 @@ class NewsCard extends StatelessWidget {
                   },
                   child: Text(
                     'Show Details',
-                    style: TextStyle(color: MyColors.myGreen, fontSize: 18),
+                    style: TextStyle(
+                        color: MyColors.myGreen,
+                        fontSize: getProportionateScreenWidth(18)),
                   )),
               SizedBox(
                 height: 10,
@@ -82,12 +85,12 @@ class NewsCard extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 20,
-          right: 15,
+          top: getProportionateScreenWidth(20),
+          right: getProportionateScreenWidth(15),
           child: CircleAvatar(
             backgroundColor: Colors.white,
             child: IconButton(
-              iconSize: 24,
+              iconSize: getProportionateScreenWidth(22),
               color: MyColors.myGreen,
               onPressed: () {
                 onSavedPress();
@@ -103,12 +106,12 @@ class NewsCard extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 80,
-          right: 15,
+          top: getProportionateScreenWidth(80),
+          right: getProportionateScreenWidth(15),
           child: CircleAvatar(
             backgroundColor: Colors.white,
             child: IconButton(
-              iconSize: 24,
+              iconSize: getProportionateScreenWidth(22),
               color: MyColors.myGreen,
               onPressed: () {
                 onSharePress();
