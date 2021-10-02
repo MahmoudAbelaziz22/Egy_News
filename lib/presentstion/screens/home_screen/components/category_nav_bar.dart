@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:news_app/presentstion/screens/home_screen/Home_Screen.dart';
 import '../../../../size_cofig.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../business_logic/cubit/articles_cubit.dart';
 import '../../../../constants.dart';
 
 class CategoryNavBar extends StatefulWidget {
-  final Function scrollToTop;
-
-  const CategoryNavBar({required this.scrollToTop});
   @override
   _CategoryNavBarState createState() => _CategoryNavBarState();
 }
@@ -24,13 +22,15 @@ class _CategoryNavBarState extends State<CategoryNavBar> {
     "business",
     "health",
   ];
-  String categoryName = "general";
-  String? country = 'eg';
+  String? categoryName;
+  String? country;
   Future<SharedPreferences> sharedPreference = SharedPreferences.getInstance();
 
   @override
   void initState() {
     super.initState();
+    categoryName = 'general';
+
     sharedPreference.then((SharedPreferences prefs) {
       country = prefs.getString('countryCode');
     });
@@ -51,9 +51,12 @@ class _CategoryNavBarState extends State<CategoryNavBar> {
           onTap: () {
             setState(() {
               categoryName = categories[index];
+              //  HomeScreen.category = categoryName;
+              //  print(categoryName);
+              //   print(HomeScreen.category);
+              BlocProvider.of<ArticlesCubit>(context).resetArticles();
               BlocProvider.of<ArticlesCubit>(context)
-                  .getArticles(category: categoryName, country: country!);
-              widget.scrollToTop();
+                  .getArticles(category: categoryName!, country: country!);
             });
           },
           child: Container(

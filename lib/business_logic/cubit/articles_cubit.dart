@@ -13,33 +13,40 @@ class ArticlesCubit extends Cubit<ArticlesState> {
 
   List<Article> articles = [];
   List<dynamic> savedArticles = [];
+  var oldPosts = <Article>[];
 
   Future<List<Article>> getArticles({
     required String country,
     required String category,
   }) async {
-    if (state is ArticlesLoading) return [];
+    emit(ArticlesLoading(oldPosts, isFirstFetch: page == 1));
+
     final currentState = state;
-    var oldPosts = <Article>[];
+
     if (currentState is ArticlesLoaded) {
       oldPosts = currentState.articles;
     }
-
-    emit(ArticlesLoading(oldPosts, isFirstFetch: page == 1));
-
     newsRepository
         .getArticles(country: country, category: category, page: page)
         .then((newArticles) {
       page++;
 
-      articles = (state as ArticlesLoading).oldArticles;
-      articles.addAll(newArticles);
+      if (state.runtimeType != ArticlesInitial &&
+          state.runtimeType != ArticlesLoaded) {
+        articles = (state as ArticlesLoading).oldArticles;
+        articles.addAll(newArticles);
+      }
 
       emit(ArticlesLoaded(articles));
       this.articles = articles;
     });
 
     return articles;
+  }
+
+  void resetArticles() {
+    oldPosts = [];
+    page = 1;
   }
 
   Future<List<dynamic>> getSavedArticles() async {

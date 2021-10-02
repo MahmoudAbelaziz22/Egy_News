@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../size_cofig.dart';
 import '../../../business_logic/cubit/articles_cubit.dart';
@@ -7,7 +8,7 @@ import '../../../constants.dart';
 import '../../../data/local_database/local_db_helper.dart';
 import '../../../data/models/article.dart';
 import 'components/app_bar_title.dart';
-import 'components/category_nav_bar.dart';
+
 import 'components/search_button.dart';
 import '../news_details_screen/news_details_screen.dart';
 import '../select_country_screen/select_country_screen.dart';
@@ -26,7 +27,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String? country;
-  String category = 'general';
+  String? category;
   List<Article>? articles;
   List<Article> searchedArticles = [];
   List<Article> toShowArticles = [];
@@ -34,23 +35,31 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isSearching = false;
   bool showScrolltoTopButton = false;
   late LocalDbHelper localDbHelper;
-
+  List<String> categories = [
+    "general",
+    "sports",
+    "entertainment",
+    "technology",
+    "science",
+    "business",
+    "health",
+  ];
   Future<SharedPreferences> sharedPreference = SharedPreferences.getInstance();
   @override
   void initState() {
     super.initState();
 
+    category = 'general';
+
     localDbHelper = LocalDbHelper();
     sharedPreference.then((SharedPreferences prefs) {
       country = prefs.getString('countryCode');
-      // print(prefs.getString('countryCode')!);
+
       if (country == null) {
-        Navigator.pushReplacementNamed(context, SelectCountryScreen.routeName);
-      }
-      //  print(country);
-      else {
+        Navigator.pushNamed(context, SelectCountryScreen.routeName);
+      } else {
         BlocProvider.of<ArticlesCubit>(context)
-            .getArticles(country: country!, category: category);
+            .getArticles(country: country!, category: category!);
       }
     });
 
@@ -59,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
         if (_scrollController.position.atEdge) {
           if (_scrollController.position.pixels != 0) {
             BlocProvider.of<ArticlesCubit>(context)
-                .getArticles(country: country!, category: category);
+                .getArticles(country: country!, category: category!);
           }
         }
         if (_scrollController.offset > 400) {
@@ -72,6 +81,57 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         }
       });
+  }
+
+  _buildCategoryNavBar() {
+    return Container(
+      height: getProportionateScreenHeight(120),
+      width: double.infinity,
+      child: StaggeredGridView.countBuilder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        crossAxisCount: 2,
+        itemCount: categories.length,
+        itemBuilder: (BuildContext context, int index) => GestureDetector(
+          onTap: () {
+            setState(() {
+              category = categories[index];
+              BlocProvider.of<ArticlesCubit>(context).resetArticles();
+              BlocProvider.of<ArticlesCubit>(context)
+                  .getArticles(category: category!, country: country!);
+            });
+          },
+          child: Container(
+            margin: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: categories[index] == category
+                  ? MyColors.myGreen
+                  : Colors.white,
+            ),
+            child: Center(
+              child: Text(
+                categories[index].toUpperCase(),
+                style: TextStyle(
+                  fontSize: getProportionateScreenWidth(12),
+                  fontWeight: FontWeight.bold,
+                  color: categories[index] == category
+                      ? Colors.white
+                      : Colors.grey,
+                ),
+              ),
+            ),
+          ),
+        ),
+        staggeredTileBuilder: (int index) => StaggeredTile.count(
+            1,
+            categories[index].length.toDouble() /
+                getProportionateScreenWidth(4.2)),
+        mainAxisSpacing: 1.0,
+        crossAxisSpacing: 1.0,
+      ),
+    );
   }
 
   _buildToastMessage(String message) {
@@ -152,27 +212,25 @@ class _HomeScreenState extends State<HomeScreen> {
           : SizedBox(),
       drawer: CustomDrawer(),
       appBar: _buildAppBar(),
-      body: BlocBuilder<ArticlesCubit, ArticlesState>(
-        builder: (context, state) {
-          bool isLoading = false;
-          if (state is ArticlesLoading && state.isFirstFetch) {
-            return LoadingIndicator();
-          }
-          if (state is ArticlesLoading) {
-            articles = (state).oldArticles;
-            toShowArticles = isSearching ? searchedArticles : articles!;
-            isLoading = true;
-          }
-          if (state is ArticlesLoaded) {
-            articles = (state).articles;
-            toShowArticles = isSearching ? searchedArticles : articles!;
-          }
-          return Column(
-            children: [
-              CategoryNavBar(
-                scrollToTop: scrollToTop,
-              ),
-              Expanded(
+      body: Column(
+        children: [
+          _buildCategoryNavBar(),
+          BlocBuilder<ArticlesCubit, ArticlesState>(
+            builder: (context, state) {
+              bool isLoading = false;
+              if (state is ArticlesLoading && state.isFirstFetch) {
+                return LoadingIndicator();
+              }
+              if (state is ArticlesLoading) {
+                articles = (state).oldArticles;
+                toShowArticles = isSearching ? searchedArticles : articles!;
+                isLoading = true;
+              }
+              if (state is ArticlesLoaded) {
+                articles = (state).articles;
+                toShowArticles = isSearching ? searchedArticles : articles!;
+              }
+              return Expanded(
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
@@ -236,10 +294,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-              ),
-            ],
-          );
-        },
+              );
+            },
+          ),
+        ],
       ),
     );
   }
